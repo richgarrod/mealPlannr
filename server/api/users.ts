@@ -13,11 +13,6 @@ router = express.Router();
 database = new db.Database();
 authenticator = new auth.AuthService();
 
-router.use(function timeLog(req: express.Request, res: express.Response, next: express.NextFunction) {
-	console.log("Time: ", Date.now());
-	next();
-});
-
 // get all users 
 router.get("/", (req: express.Request, res: express.Response) => {
 	database.query("select name from users", (err: Error, result: any) => {

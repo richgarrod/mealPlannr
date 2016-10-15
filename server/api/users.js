@@ -8,10 +8,6 @@ let router;
 router = express.Router();
 database = new db.Database();
 authenticator = new auth.AuthService();
-router.use(function timeLog(req, res, next) {
-    console.log("Time: ", Date.now());
-    next();
-});
 router.get("/", (req, res) => {
     database.query("select name from users", (err, result) => {
         if (err) {

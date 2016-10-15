@@ -8,6 +8,8 @@ import * as path from "path";
 
 var port = process.env.PORT || 3000;
 
+var timerMiddleware = require("./server/middleware/timer");
+var authMiddleware = require("./server/middleware/auth");
 var userRoute = require("./server/api/users");
 var authRoute = require("./server/api/auth");
 
@@ -57,6 +59,10 @@ class Server {
    */
   private config() {
 
+    // mount timer
+    this.app.use(timerMiddleware);
+
+    // mount cookie parser
     this.app.use(cookieParser());
 
     //mount json form parser
@@ -67,6 +73,9 @@ class Server {
 
     //add static paths
     this.app.use(express.static(path.join(__dirname, "client")));
+
+    // mount timer
+    this.app.use("/users", authMiddleware);
 
     // catch 404 and forward to error handler
     this.app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {

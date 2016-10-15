@@ -11,15 +11,8 @@ let router: express.Router;
 router = express.Router();
 authenticator = new auth.AuthService();
 
-router.use(function timeLog(req: express.Request, res: express.Response, next: express.NextFunction) {
-	console.log("Time: ", Date.now());
-	next();
-});
-
 // check if user is authenticated (via cookie)
 router.get("/authenticate", (req: express.Request, res: express.Response) => {
-	console.log(req.cookies);
-	console.log(req.cookies.mealPlannr);
 	authenticator.checkSession(req.cookies.mealPlannr, (userId) => {
 		res.json({"userId": userId});
 		res.send();
@@ -28,9 +21,9 @@ router.get("/authenticate", (req: express.Request, res: express.Response) => {
 
 // log the user in
 router.post("/login", (req: express.Request, res: express.Response) => {
-	authenticator.checkPassword(req.body.username, req.body.password, (valid) => {
-		if (valid) {
-			authenticator.setSession(req.body.username, (session) => {
+	authenticator.checkPassword(req.body.username, req.body.password, (userId) => {
+		if (userId) {
+			authenticator.setSession(req.body.username, userId, (session) => {
 				res.cookie("mealPlannr", session, { maxAge: 100000, httpOnly: true });
 				res.sendStatus(200);
 			});

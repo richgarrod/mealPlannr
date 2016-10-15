@@ -4,6 +4,8 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const path = require("path");
 var port = process.env.PORT || 3000;
+var timerMiddleware = require("./server/middleware/timer");
+var authMiddleware = require("./server/middleware/auth");
 var userRoute = require("./server/api/users");
 var authRoute = require("./server/api/auth");
 class Server {
@@ -16,10 +18,12 @@ class Server {
         return new Server();
     }
     config() {
+        this.app.use(timerMiddleware);
         this.app.use(cookieParser());
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.static(path.join(__dirname, "client")));
+        this.app.use("/users", authMiddleware);
         this.app.use(function (err, req, res, next) {
             var error = new Error("Not Found, sorry beans");
             err.status = 404;

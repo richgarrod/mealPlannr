@@ -24,7 +24,7 @@ module Auth {
     };
 
     public checkPassword = (username, password, callback) => {
-        this.db.query("SELECT hash FROM users WHERE name = '" + username + "';", (err, result) => {
+        this.db.query("SELECT id, hash FROM users WHERE name = '" + username + "';", (err, result) => {
             if (err) {
                 throw err;
             }
@@ -32,8 +32,8 @@ module Auth {
             let salt = result.rows[0].hash.split(".")[0];
             let hash = result.rows[0].hash.split(".")[1].trim();
             let newHash = crypto.pbkdf2Sync(password, salt, 500, 50, "sha512").toString("hex").trim();
-            let valid = hash === newHash;
-            callback(valid);
+            let id = hash === newHash ? result.rows[0].id : null;
+            callback(id);
         });
     };
 
@@ -44,26 +44,25 @@ module Auth {
                 throw err;
             }
             console.log(result.rows);
-            callback(result.rows[0].id);
+            let userId = result.rows.length > 0 ? result.rows[0].id : null;
+            callback(userId);
         });
     };
 
-    public setSession = (username, callback) => {
-        let session = crypto.createHash("sha1").digest().toString("hex");
-
-        this.db.query("SELECT id FROM users where name = '" + username + "';", (err, result) => {
-            if (err) {
-                throw err;
-            }
-            let userId = result.rows[0].id;
-
-            this.db.query("INSERT INTO user_sessions(id, session) VALUES (" + userId + ",'" + session + "');",
-                (err, result) => {
-                    if (err) {
-                        throw err;
-                    }
-                    callback(session);
-            });
+    public setSession = (username, userId, callback) => {
+        let session = crypto.randomBytes(30).toString("hex");
+        this.db.query("DELETE FROM user_sessions WHERE id = " + userId + ";",
+            (err, result) => {
+                if (err) {
+                    throw err;
+                }
+                this.db.query("INSERT INTO user_sessions(id, session) VALUES (" + userId + ",'" + session + "');",
+                    (err, result) => {
+                        if (err) {
+                            throw err;
+                        }
+                        callback(session);
+                });
         });
     }
 
