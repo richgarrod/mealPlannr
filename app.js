@@ -3,7 +3,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const path = require("path");
 var port = process.env.PORT || 3000;
-const aboutRoute = require("./server/api/about");
+var userRoute = require("./server/api/users");
+var authRoute = require("./server/api/auth");
 class Server {
     constructor() {
         this.app = express();
@@ -18,7 +19,7 @@ class Server {
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.static(path.join(__dirname, "client")));
         this.app.use(function (err, req, res, next) {
-            var error = new Error("Not Found");
+            var error = new Error("Not Found, sorry beans");
             err.status = 404;
             next(err);
         });
@@ -26,7 +27,8 @@ class Server {
     routes() {
         let router;
         router = express.Router();
-        router.use("/about", aboutRoute);
+        router.use("/users", userRoute);
+        router.use("/auth", authRoute);
         this.app.use(router);
     }
 }

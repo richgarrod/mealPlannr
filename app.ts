@@ -7,10 +7,8 @@ import * as path from "path";
 
 var port = process.env.PORT || 3000;
 
-// import * as homeRoute from "./server/api/home";
-import aboutRoute = require("./server/api/about");
-
-// import * as boxesRoute from "./server/api/boxes";
+var userRoute = require("./server/api/users");
+var authRoute = require("./server/api/auth");
 
 /**
  * The server.
@@ -69,7 +67,7 @@ class Server {
 
     // catch 404 and forward to error handler
     this.app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
-      var error = new Error("Not Found");
+      var error = new Error("Not Found, sorry beans");
       err.status = 404;
       next(err);
     });
@@ -87,9 +85,10 @@ class Server {
     let router: express.Router;
     router = express.Router();
 
-    //about page
-    router.use("/about", aboutRoute);
-
+    //users api
+    router.use("/users", userRoute);
+    // auth api
+    router.use("/auth", authRoute);
 
     //use router middleware
     this.app.use(router);

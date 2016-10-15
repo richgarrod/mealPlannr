@@ -1,6 +1,6 @@
-CREATE TABLE users(
+CREATE TABLE users (
    id serial PRIMARY KEY NOT NULL,
    name           TEXT    NOT NULL,
-   password       CHAR(50),
+   hash       CHAR(200),
    admin bool
 )

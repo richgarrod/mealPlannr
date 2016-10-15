@@ -21,17 +21,16 @@ module DB {
         port: this.config.port,
         ssl: true
       });
-    }
-
-    query = (queryString: string, callback: any) => {
       this.client.connect((err: Error) => {
         if (err) {
           throw err;
         }
-        // execute a query on our database
-        this.client.query(queryString, callback);
       });
-    }
+    };
+
+    query = (queryString: string, callback: any) => {
+      this.client.query(queryString, callback);
+    };
   }
 }
 
