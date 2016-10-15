@@ -1,0 +1,9 @@
+<div>
+	<p ng-if="!dropIns">You haven't dropped in yet. Sorrys.</p>
+	<p ng-if="dropIns">
+		Drop Ins:
+		<ul>
+			<li ng-repeat="dropIn in dropIns">{{dropIn.name}} on {{dropIn.date | date : 'yyyy-mm-dd hh:hh' : 'UTC' }}</li>
+		<ul>
+	</p>
+</div>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link rel="stylesheet" href="./vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./vendor/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
+    <title>Drop In</title>
+    <script src="./vendor/angular/angular.js"></script> 
+    <script src="./vendor/angular-ui-router/release/angular-ui-router.js"></script>    
+    <script src="./vendor/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+    <script src="./vendor/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="./main.js"></script>
+</head>
+<body ng-app="dropInApp">
+
+    <!-- NAVIGATION -->
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" ui-sref="#">Drop In</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a ui-sref="home">Home</a></li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li><a ui-sref="dropIn">Drop In!</a></li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li><a ui-sref="about">About</a></li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li><a ui-sref="myAccount.details">My Account</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+
+        <div ui-view></div>
+
+    </div>
+
+</body>
+</html>
