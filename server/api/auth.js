@@ -10,12 +10,19 @@ router.use(function timeLog(req, res, next) {
     next();
 });
 router.get("/authenticate", (req, res) => {
-    res.status(200);
+    console.log(req.cookies.mealPlannr);
+    authenticator.checkSession(req.cookies.mealPlannr, (userId) => {
+        res.json({ "userId": userId });
+        res.send();
+    });
 });
 router.post("/login", (req, res) => {
     authenticator.checkPassword(req.body.username, req.body.password, (valid) => {
         if (valid) {
-            res.sendStatus(200);
+            authenticator.setSession(req.body.username, (session) => {
+                res.cookie("mealPlannr", session, { maxAge: 100000, httpOnly: true });
+                res.sendStatus(200);
+            });
         }
         else {
             res.sendStatus(401);

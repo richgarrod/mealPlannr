@@ -37,6 +37,36 @@ module Auth {
         });
     };
 
+    public checkSession = (sessionId, callback) => {
+        console.log(sessionId);
+        this.db.query("SELECT id FROM user_sessions WHERE session = '" + sessionId + "'", (err, result) => {
+            if (err) {
+                throw err;
+            }
+            console.log(result.rows);
+            callback(result.rows[0].id);
+        });
+    };
+
+    public setSession = (username, callback) => {
+        let session = crypto.createHash("sha1").digest().toString("hex");
+
+        this.db.query("SELECT id FROM users where name = '" + username + "';", (err, result) => {
+            if (err) {
+                throw err;
+            }
+            let userId = result.rows[0].id;
+
+            this.db.query("INSERT INTO user_sessions(id, session) VALUES (" + userId + ",'" + session + "');",
+                (err, result) => {
+                    if (err) {
+                        throw err;
+                    }
+                    callback(session);
+            });
+        });
+    }
+
   }
 }
 

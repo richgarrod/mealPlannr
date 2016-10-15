@@ -18,14 +18,22 @@ router.use(function timeLog(req: express.Request, res: express.Response, next: e
 
 // check if user is authenticated (via cookie)
 router.get("/authenticate", (req: express.Request, res: express.Response) => {
-	res.status(200);
+	console.log(req.cookies);
+	console.log(req.cookies.mealPlannr);
+	authenticator.checkSession(req.cookies.mealPlannr, (userId) => {
+		res.json({"userId": userId});
+		res.send();
+	});
 });
 
 // log the user in
 router.post("/login", (req: express.Request, res: express.Response) => {
 	authenticator.checkPassword(req.body.username, req.body.password, (valid) => {
 		if (valid) {
-			res.sendStatus(200);
+			authenticator.setSession(req.body.username, (session) => {
+				res.cookie("mealPlannr", session, { maxAge: 100000, httpOnly: true });
+				res.sendStatus(200);
+			});
 		} else {
 			res.sendStatus(401);
 		}
