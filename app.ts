@@ -2,6 +2,7 @@
 "use strict";
 
 import * as bodyParser from "body-parser";
+import * as cookieParser from "cookie-parser";
 import * as express from "express";
 import * as path from "path";
 
@@ -55,6 +56,8 @@ class Server {
    * @return void
    */
   private config() {
+
+    this.app.use(cookieParser());
 
     //mount json form parser
     this.app.use(bodyParser.json());

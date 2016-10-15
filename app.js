@@ -1,5 +1,6 @@
 "use strict";
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const path = require("path");
 var port = process.env.PORT || 3000;
@@ -15,6 +16,7 @@ class Server {
         return new Server();
     }
     config() {
+        this.app.use(cookieParser());
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.static(path.join(__dirname, "client")));
