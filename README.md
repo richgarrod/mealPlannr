@@ -2,8 +2,8 @@
 Meal Planning web tool
 
 ### Build Instructions
-`grunt`
-`npm start`
+* `grunt`
+* `npm start`
 
 ### Deployment
 Currently deployed to heroku
