@@ -45,10 +45,11 @@ router.get("/:username", (req: express.Request, res: express.Response) => {
 router.post("/create", (req: express.Request, res: express.Response) => {
 	let username = req.body.username;
 	let password = req.body.password;
+	let email = req.body.email;
 
 	authenticator.createHash(password, (hash) => {
-		let sql = "INSERT INTO users(name, hash, admin) VALUES('" + username +
-		"','" + hash + "',false);";
+		let sql = "INSERT INTO users(name, hash, email, admin) VALUES('" + username +
+		"','" + hash + "','" + email + "',false);";
 		console.log(sql);
 		database.query(sql, (err: Error, result: any) => {
 			if (err) {

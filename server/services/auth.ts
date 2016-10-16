@@ -13,7 +13,7 @@ module Auth {
         this.db = new db.Database();
     };
 
-    public createHash = (password, callback) => {
+    public createHash = (password: string, callback: Function) => {
         let salt = crypto.randomBytes(20).toString("hex");
         crypto.pbkdf2(password, salt, 500, 50, "sha512", (err, derivedKey) => {
             if (err) {
@@ -23,7 +23,7 @@ module Auth {
         });
     };
 
-    public checkPassword = (username, password, callback) => {
+    public checkPassword = (username: string, password: string, callback: Function) => {
         this.db.query("SELECT id, hash FROM users WHERE name = '" + username + "';", (err, result) => {
             if (err) {
                 throw err;
@@ -37,7 +37,7 @@ module Auth {
         });
     };
 
-    public checkSession = (sessionId, callback) => {
+    public checkSession = (sessionId: string, callback: Function) => {
         console.log(sessionId);
         this.db.query("SELECT id FROM user_sessions WHERE session = '" + sessionId + "'", (err, result) => {
             if (err) {
@@ -49,7 +49,7 @@ module Auth {
         });
     };
 
-    public setSession = (username, userId, callback) => {
+    public setSession = (username: string, userId: number, callback: Function) => {
         let session = crypto.randomBytes(30).toString("hex");
         this.db.query("DELETE FROM user_sessions WHERE id = " + userId + ";",
             (err, result) => {

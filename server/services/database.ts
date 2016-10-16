@@ -28,7 +28,7 @@ module DB {
       });
     };
 
-    query = (queryString: string, callback: any) => {
+    query = (queryString: string, callback: any) : any => {
       this.client.query(queryString, callback);
     };
   }
